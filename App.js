@@ -4,8 +4,20 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import LoginScreen from './src/views/screens/LoginScreen';
+import RegistrationScreen from './src/views/screens/RegistrationScreen';
+import HomeScreen from './src/views/screens/HomeScreen';
+
+import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons'; 
 
 SplashScreen.preventAutoHideAsync();
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -24,9 +36,20 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <Text style={styles.title}>Login</Text>
-    </View>
+    // <View style={styles.container} onLayout={onLayoutRootView}>
+    //   <Text style={styles.title}>Login</Text>
+    // </View>
+
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="Registration"
+          component={RegistrationScreen}
+        />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -40,13 +63,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: RFPercentage(5),
     fontFamily: "SourceSansPro-SemiBold",
-    color: "#1D304E",
+    color: "#182747",
     marginBottom: 20,
   },
-  // input: {
-  //   borderColor: "#fff",
-  //   borderBottomColor: "#e3e3e3",
-  //   backgroundColor: "none",
-  //   height: 100,
-  // }
 });
