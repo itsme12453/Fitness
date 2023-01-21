@@ -2,38 +2,53 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useCallback, useState, useEffect } from 'react';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+// import { useFonts } from 'expo-font';
+// import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AppLoading from 'expo-app-loading';
 
 import LoginScreen from './src/views/screens/LoginScreen';
 import RegistrationScreen from './src/views/screens/RegistrationScreen';
 import HomeScreen from './src/views/screens/HomeScreen';
 
+// import useFonts from './src/hooks/useFonts';
+
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from '@expo/vector-icons'; 
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    'SourceSansPro-Bold': require('./assets/fonts/SourceSansPro-Bold.ttf'),
-    'SourceSansPro-SemiBold': require('./assets/fonts/SourceSansPro-SemiBold.ttf'),
-  });
+  // const [fontsLoaded] = useFonts({
+  //   'SourceSansPro-Bold': require('./assets/fonts/SourceSansPro-Bold.ttf'),
+  //   'SourceSansPro-SemiBold': require('./assets/fonts/SourceSansPro-SemiBold.ttf'),
+  // });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (fontsLoaded) {
+  //     await SplashScreen.hideAsync();
+  //   }
+  // }, [fontsLoaded]);
 
-  if (!fontsLoaded) {
-    return null;
-  }
+  // if (!fontsLoaded) {
+  //   return null;
+  // }
+
+  // if (!isReady) {
+  //   return (
+  //     <AppLoading
+  //       startAsync={LoadFonts}
+  //       onFinish={() => setIsReady(true)}
+  //       onError={() => {}}
+  //     />
+  //   );
+  // }
+
+
 
   return (
     // <View style={styles.container} onLayout={onLayoutRootView}>
@@ -41,7 +56,7 @@ export default function App() {
     // </View>
 
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: false, animationTypeForReplace: "pop", animation: "slide_from_right" }}>
         <Stack.Screen
           name="Registration"
           component={RegistrationScreen}
@@ -54,16 +69,16 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    margin: 25,
-    marginTop: 200,
-  },
-  title: {
-    fontSize: RFPercentage(5),
-    fontFamily: "SourceSansPro-SemiBold",
-    color: "#182747",
-    marginBottom: 20,
-  },
+  // container: {
+  //   flex: 1,
+  //   backgroundColor: '#fff',
+  //   margin: 25,
+  //   marginTop: 200,
+  // },
+  // title: {
+  //   fontSize: RFPercentage(5),
+  //   fontFamily: "SourceSansPro-SemiBold",
+  //   color: "#182747",
+  //   marginBottom: 20,
+  // },
 });
