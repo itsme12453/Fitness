@@ -42,15 +42,15 @@ const RegistrationScreen = ({navigation}) => {
         Keyboard.dismiss();
         let valid = true;
 
-        if (!inputs.email){
+        if (!inputs.email.trim()){
             handleError("Please enter an email address", "email");
             valid = false;
-        } else if(!inputs.email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+        } else if(!inputs.email.trim().match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
             handleError("Invalid Email Address", "email");
             valid = false;
         }
 
-        if (!inputs.fullname){
+        if (!inputs.fullname.trim()){
             handleError("Please enter your full name", "fullname");
             valid = false;
         }
@@ -60,8 +60,14 @@ const RegistrationScreen = ({navigation}) => {
         } else if(inputs.password.length < 8){
             handleError("Minimum password length of 8", "password");
             valid = false;
-        } else if(!inputs.password.match(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/)){
-            handleError("Password must contain atleast one special character and 1 number", "password")
+        } else if(/\s/g.test(inputs.password)){
+            handleError("Password cannot have spaces", "password")
+            valid = false;
+        } else if(!inputs.password.match(/[-/`~!#*$@_%+=.,^&(){}[\]|;<>?\\]/g)){
+            handleError("Password must contain atleast one special character", "password")
+            valid = false;
+        } else if(!inputs.password.match(/[0-9]/g)){
+            handleError("Password must contain atleast one number", "password")
             valid = false;
         }
 
@@ -71,18 +77,48 @@ const RegistrationScreen = ({navigation}) => {
     };
     
     const register = () => {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
+        // setLoading(true);
+        // setTimeout(() => {
+        //     setLoading(false);
 
-            try {
-                // AsyncStorage.setItem("user", JSON.stringify(inputs));
-                navigation.navigate("Login");
-            } catch (error) {
-                Alert.alert("Error", "Something went wrong")
+        //     try {
+        //         // AsyncStorage.setItem("user", JSON.stringify(inputs));
+        //         navigation.navigate("Login");
+        //     } catch (error) {
+        //         Alert.alert("Error", "Something went wrong")
+        //     }
+
+        // }, 1000);
+
+        fetch("https://fitness-app-hxjw.onrender.com/register", {
+            method: "POST",
+            headers: {
+                "authentication-key": "DSH$32Rfdhu@'34", "email": inputs.email, "password": inputs.password, "fullname": inputs.fullname
             }
+        })
+        .then(res => {
+            console.log(res.status);
+            // if(res.status == 200){
+            //     navigation.navigate("Login");
+            // }
 
-        }, 1000);
+            return res.text()
+
+            // if(!res.status == 200){
+            //     Alert.alert("Error", res.text())
+            // }
+        })
+        .then(
+            (result) => {
+                // console.log("Result: " + result);
+                if(result !== "Registered"){
+                    Alert.alert("Error", result);
+                }
+            },
+            (error) => {
+                Alert.alert("Error", error);
+            }
+        )
     };
 
     const handleOnChange = (text, input) => {
@@ -122,7 +158,7 @@ const RegistrationScreen = ({navigation}) => {
                     <Input delay={0} error={errors.email} onFocus={() => {
                         handleError(null, "email");
                     }} onChangeText={text => handleOnChange(text, "email")} placeholder="Email ID" iconName="alternate-email" />
-                    <Input delay={100} error={errors.fullname} onFocus={() => {
+                    <Input delay={100} fullname error={errors.fullname} onFocus={() => {
                         handleError(null, "fullname");
                     }} onChangeText={(text) => handleOnChange(text, "fullname")} placeholder="Full Name" iconName="person-outline" />
                     <Input delay={200} error={errors.password} onFocus={() => {

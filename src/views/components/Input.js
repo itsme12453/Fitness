@@ -6,7 +6,8 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons"
 const Input = ({
     iconName, 
     error, 
-    password, 
+    password,
+    fullname,
     onFocus=() => {},
     delay = 0,
     ...props 
@@ -37,7 +38,7 @@ const Input = ({
                 onBlur={() => {
                     setIsFocused(false);
                 }}
-                style={{ fontSize: 18, color: COLORS.black, flex: 1, fontWeight: "500", opacity: 0.8, }} {...props} />
+                style={{ fontSize: 18, color: COLORS.black, flex: 1, fontWeight: "500", opacity: 0.8 }} autoCapitalize={ fullname ? "words" : "none" } {...props} />
 
                 { password && (
                     <Ionicons onPress={() => {setHidePassword(!hidePassword)}} name={hidePassword ? "eye-outline" : "eye-off-outline" } size={30} style={{ color: COLORS.grey }} />
